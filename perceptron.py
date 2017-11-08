@@ -20,6 +20,14 @@ def get_train_data(n_attributes, n_train):
         y_train.append(int(current_record[-1]))
     return (x_train, y_train)
 
+def get_test_data(n_test):
+    """Reads input and gets testing data
+    PARAMS:
+    - n_test : number of tests
+    RETURNS:
+    - list of test x data
+    """
+    return [[int(x) for x in input().replace(' ', '').split(',')] for _ in range(n_test)]
 
 def main():
     """Main program
@@ -29,6 +37,8 @@ def main():
     n_test = int(input())
     result = get_train_data(n_attributes, n_train)
     print(result)
+    test = get_test_data(n_test)
+    print(test)
 
 
 if __name__ == '__main__':
