@@ -16,22 +16,46 @@ class Perceptron(object):
         return 'Threshold: {}\nWeights: {}'.format(self.threshold, self.weights)
 
     def train(self, x_train, y_train, learn_rate=0.005, iteration_limit=10):
+        """Trains perceptron
+        PARAMS:
+        - x_train: List of x training data
+        - y_train : List of y training data
+        - learn_rate : Learning rate of perceptron
+        - iteration_limit : Max num of iterations
+        RETURNS:
+        - True if linear separable, False if not
+        """
         error = 1.0
         iteration = 0
         while error > 0.0 and iteration < iteration_limit:
             error = 0.0
             for i_record in range(len(x_train)):
-                current_y = 1 if sum([x_train[i_record][i]*self.weights[i] for i in range(len(x_train[i_record]))]) >= self.threshold else 0
+                current_y = self.predict(x_train[i_record])
                 error += abs(y_train[i_record]-current_y)
-                self.re_weight(learn_rate, x_train[i_record], y_train[i_record], current_y)
-                print(self.weights)
+                self.re_weight(learn_rate, x_train[i_record], y_train[i_record], current_y)                
             iteration += 1
         return False if error > 0.0 else True
 
     def re_weight(self, learn_rate, x_data, y, y_obtained):
+        """Re weights edges of perceptron
+        PARAMS:
+        - learn_rate : Learning rate of perceptron
+        - x_data : x training data
+        - y : goal output
+        - y_obtained : y obtained
+        """
         for i in range(len(x_data)):
             weight_diff = learn_rate * (y-y_obtained) * x_data[i]
             self.weights[i] += weight_diff
+    
+    def predict(self, x_data):
+        """Predicts perceptron output
+        PARAMS:
+        - x_data : input data
+        RETURNS:
+        - 1 or 0
+        """
+        return 1 if sum([x_data[i]*self.weights[i] for i in range(len(x_data))]) >= self.threshold else 0
 
 
 def get_train_data(n_attributes, n_train):
@@ -65,15 +89,13 @@ def main():
     n_attributes = int(input())
     n_train = int(input())
     n_test = int(input())
-    data = get_train_data(n_attributes, n_train)
-    print(data)
-    test = get_test_data(n_test)
-    print(test)
-    p = Perceptron(n_attributes)
-    print(p)
-    r_train = p.train(data[0], data[1])
-    print(r_train)
-
+    train_data = get_train_data(n_attributes, n_train)    
+    test_data = get_test_data(n_test)
+    perceptron = Perceptron(n_attributes)
+    if perceptron.train(train_data[0], train_data[1]):
+        print('\n'.join([str(perceptron.predict(test)) for test in test_data]))
+    else:
+        print('no solution found')
 
 if __name__ == '__main__':
     main()
