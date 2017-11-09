@@ -32,7 +32,7 @@ class Perceptron(object):
             for i_record in range(len(x_train)):
                 current_y = self.predict(x_train[i_record])
                 error += abs(y_train[i_record]-current_y)
-                self.re_weight(learn_rate, x_train[i_record], y_train[i_record], current_y)                
+                self.re_weight(learn_rate, x_train[i_record], y_train[i_record], current_y)
             iteration += 1
         return False if error > 0.0 else True
 
@@ -89,7 +89,7 @@ def main():
     n_attributes = int(input())
     n_train = int(input())
     n_test = int(input())
-    train_data = get_train_data(n_attributes, n_train)    
+    train_data = get_train_data(n_attributes, n_train)
     test_data = get_test_data(n_test)
     perceptron = Perceptron(n_attributes)
     if perceptron.train(train_data[0], train_data[1]):
